@@ -5,7 +5,6 @@ import {
   TouchableOpacity,
   StyleSheet,
   Animated,
-  Dimensions,
 } from 'react-native';
 import type { Transaction } from '../../types/transaction.types';
 import type { Theme } from '../../types';
@@ -91,7 +90,7 @@ export const SuccessScreen: React.FC<SuccessScreenProps> = ({
         </Text>
 
         <Text style={[styles.subtitle, { color: theme.textColor + 'BB' }]}>
-          Your money is on its way to {transaction.data.receiver.firstName}
+          Your money is on its way to {transaction.data.receiver.fullName}
         </Text>
 
         <View
@@ -109,17 +108,6 @@ export const SuccessScreen: React.FC<SuccessScreenProps> = ({
             <Text style={[styles.detailValue, { color: theme.textColor }]}>
               {transaction.id}
             </Text>
-          </View>
-
-          <View style={styles.detailRow}>
-            <Text
-              style={[styles.detailLabel, { color: theme.textColor + 'BB' }]}
-            >
-              Tracking Number:
-            </Text>
-            {/* <Text style={[styles.detailValue, { color: theme.textColor }]}>
-              {transaction.trackingNumber}
-            </Text> */}
           </View>
 
           <View style={styles.detailRow}>
@@ -212,8 +200,6 @@ export const SuccessScreen: React.FC<SuccessScreenProps> = ({
     </Animated.View>
   );
 };
-
-const { width } = Dimensions.get('window');
 
 const styles = StyleSheet.create({
   container: {

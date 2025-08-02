@@ -18,7 +18,7 @@ import {
 const App: React.FC = () => {
   const [showWidget, setShowWidget] = useState(false);
   const [theme, setTheme] = useState<'light' | 'dark'>('light');
-  const [apiKey, setApiKey] = useState('demo-api-key');
+  const [apiKey, setApiKey] = useState('1GH34535453');
   const [lastTransaction, setLastTransaction] = useState<Transaction | null>(
     null
   );

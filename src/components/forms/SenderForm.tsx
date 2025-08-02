@@ -65,43 +65,21 @@ export const SenderForm: React.FC<SenderFormProps> = ({
           Sender Information
         </Text>
 
-        <View style={styles.row}>
-          <View style={styles.halfInput}>
-            <Text style={[styles.label, { color: theme.textColor }]}>
-              First Name *
-            </Text>
-            <TextInput
-              style={errors.firstName ? errorInputStyle : inputStyle}
-              value={senderDetails.firstName || ''}
-              onChangeText={(value) => handleInputChange('firstName', value)}
-              placeholder="Enter first name"
-              placeholderTextColor={theme.textColor + '80'}
-            />
-            {errors.firstName && (
-              <Text style={[styles.errorText, { color: theme.errorColor }]}>
-                {errors.firstName}
-              </Text>
-            )}
-          </View>
-
-          <View style={styles.halfInput}>
-            <Text style={[styles.label, { color: theme.textColor }]}>
-              Last Name *
-            </Text>
-            <TextInput
-              style={errors.lastName ? errorInputStyle : inputStyle}
-              value={senderDetails.lastName || ''}
-              onChangeText={(value) => handleInputChange('lastName', value)}
-              placeholder="Enter last name"
-              placeholderTextColor={theme.textColor + '80'}
-            />
-            {errors.lastName && (
-              <Text style={[styles.errorText, { color: theme.errorColor }]}>
-                {errors.lastName}
-              </Text>
-            )}
-          </View>
-        </View>
+        <Text style={[styles.label, { color: theme.textColor }]}>
+          Full Name *
+        </Text>
+        <TextInput
+          style={errors.firstName ? errorInputStyle : inputStyle}
+          value={senderDetails.fullName || ''}
+          onChangeText={(value) => handleInputChange('fullName', value)}
+          placeholder="Enter first name"
+          placeholderTextColor={theme.textColor + '80'}
+        />
+        {errors.firstName && (
+          <Text style={[styles.errorText, { color: theme.errorColor }]}>
+            {errors.firstName}
+          </Text>
+        )}
 
         <Text style={[styles.label, { color: theme.textColor }]}>Email *</Text>
         <TextInput
@@ -133,76 +111,6 @@ export const SenderForm: React.FC<SenderFormProps> = ({
         {errors.phoneNumber && (
           <Text style={[styles.errorText, { color: theme.errorColor }]}>
             {errors.phoneNumber}
-          </Text>
-        )}
-
-        <Text style={[styles.label, { color: theme.textColor }]}>
-          Address *
-        </Text>
-        <TextInput
-          style={errors.address ? errorInputStyle : inputStyle}
-          value={senderDetails.address || ''}
-          onChangeText={(value) => handleInputChange('address', value)}
-          placeholder="Enter street address"
-          placeholderTextColor={theme.textColor + '80'}
-        />
-        {errors.address && (
-          <Text style={[styles.errorText, { color: theme.errorColor }]}>
-            {errors.address}
-          </Text>
-        )}
-
-        <View style={styles.row}>
-          <View style={styles.halfInput}>
-            <Text style={[styles.label, { color: theme.textColor }]}>
-              City *
-            </Text>
-            <TextInput
-              style={errors.city ? errorInputStyle : inputStyle}
-              value={senderDetails.city || ''}
-              onChangeText={(value) => handleInputChange('city', value)}
-              placeholder="Enter city"
-              placeholderTextColor={theme.textColor + '80'}
-            />
-            {errors.city && (
-              <Text style={[styles.errorText, { color: theme.errorColor }]}>
-                {errors.city}
-              </Text>
-            )}
-          </View>
-
-          <View style={styles.halfInput}>
-            <Text style={[styles.label, { color: theme.textColor }]}>
-              Postal Code *
-            </Text>
-            <TextInput
-              style={errors.postalCode ? errorInputStyle : inputStyle}
-              value={senderDetails.postalCode || ''}
-              onChangeText={(value) => handleInputChange('postalCode', value)}
-              placeholder="Enter postal code"
-              placeholderTextColor={theme.textColor + '80'}
-            />
-            {errors.postalCode && (
-              <Text style={[styles.errorText, { color: theme.errorColor }]}>
-                {errors.postalCode}
-              </Text>
-            )}
-          </View>
-        </View>
-
-        <Text style={[styles.label, { color: theme.textColor }]}>
-          Country *
-        </Text>
-        <TextInput
-          style={errors.country ? errorInputStyle : inputStyle}
-          value={senderDetails.country || ''}
-          onChangeText={(value) => handleInputChange('country', value)}
-          placeholder="Enter country"
-          placeholderTextColor={theme.textColor + '80'}
-        />
-        {errors.country && (
-          <Text style={[styles.errorText, { color: theme.errorColor }]}>
-            {errors.country}
           </Text>
         )}
       </ScrollView>

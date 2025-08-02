@@ -111,6 +111,88 @@ export const AmountForm: React.FC<AmountFormProps> = ({
           Send Money
         </Text>
 
+        <Text style={[styles.currencySectionTitle, { color: theme.textColor }]}>
+          Change Currencies
+        </Text>
+
+        <Text style={[styles.label, { color: theme.textColor }]}>
+          Send From
+        </Text>
+        <ScrollView
+          horizontal
+          showsHorizontalScrollIndicator={false}
+          style={styles.currencyList}
+        >
+          {currencies.map((currency) => (
+            <TouchableOpacity
+              key={`send-${currency}`}
+              style={[
+                styles.currencyOption,
+                {
+                  backgroundColor:
+                    fromCurrency === currency
+                      ? theme.primaryColor
+                      : theme.cardBackgroundColor,
+                  borderColor: theme.borderColor,
+                },
+              ]}
+              onPress={() => setFromCurrency(currency)}
+            >
+              <Text
+                style={[
+                  styles.currencyOptionText,
+                  {
+                    color:
+                      fromCurrency === currency
+                        ? theme.buttonTextColor
+                        : theme.textColor,
+                  },
+                ]}
+              >
+                {currency}
+              </Text>
+            </TouchableOpacity>
+          ))}
+        </ScrollView>
+
+        <Text style={[styles.label, { color: theme.textColor }]}>Send To</Text>
+        <ScrollView
+          horizontal
+          showsHorizontalScrollIndicator={false}
+          style={styles.currencyList}
+        >
+          {currencies.map((currency) => (
+            <TouchableOpacity
+              key={`receive-${currency}`}
+              style={[
+                styles.currencyOption,
+                {
+                  backgroundColor:
+                    toCurrency === currency
+                      ? theme.primaryColor
+                      : theme.cardBackgroundColor,
+                  borderColor: theme.borderColor,
+                },
+              ]}
+              onPress={() => setToCurrency(currency)}
+            >
+              <Text
+                style={[
+                  styles.currencyOptionText,
+                  {
+                    color:
+                      toCurrency === currency
+                        ? theme.buttonTextColor
+                        : theme.textColor,
+                  },
+                ]}
+              >
+                {currency}
+              </Text>
+            </TouchableOpacity>
+          ))}
+        </ScrollView>
+
         <Text style={[styles.label, { color: theme.textColor }]}>You Send</Text>
         <View style={styles.amountRow}>
           <TextInput
@@ -219,88 +301,6 @@ export const AmountForm: React.FC<AmountFormProps> = ({
             </View>
           </View>
         )}
-
-        <Text style={[styles.currencySectionTitle, { color: theme.textColor }]}>
-          Change Currencies
-        </Text>
-
-        <Text style={[styles.label, { color: theme.textColor }]}>
-          Send From
-        </Text>
-        <ScrollView
-          horizontal
-          showsHorizontalScrollIndicator={false}
-          style={styles.currencyList}
-        >
-          {currencies.map((currency) => (
-            <TouchableOpacity
-              key={`send-${currency}`}
-              style={[
-                styles.currencyOption,
-                {
-                  backgroundColor:
-                    fromCurrency === currency
-                      ? theme.primaryColor
-                      : theme.cardBackgroundColor,
-                  borderColor: theme.borderColor,
-                },
-              ]}
-              onPress={() => setFromCurrency(currency)}
-            >
-              <Text
-                style={[
-                  styles.currencyOptionText,
-                  {
-                    color:
-                      fromCurrency === currency
-                        ? theme.buttonTextColor
-                        : theme.textColor,
-                  },
-                ]}
-              >
-                {currency}
-              </Text>
-            </TouchableOpacity>
-          ))}
-        </ScrollView>
-
-        <Text style={[styles.label, { color: theme.textColor }]}>Send To</Text>
-        <ScrollView
-          horizontal
-          showsHorizontalScrollIndicator={false}
-          style={styles.currencyList}
-        >
-          {currencies.map((currency) => (
-            <TouchableOpacity
-              key={`receive-${currency}`}
-              style={[
-                styles.currencyOption,
-                {
-                  backgroundColor:
-                    toCurrency === currency
-                      ? theme.primaryColor
-                      : theme.cardBackgroundColor,
-                  borderColor: theme.borderColor,
-                },
-              ]}
-              onPress={() => setToCurrency(currency)}
-            >
-              <Text
-                style={[
-                  styles.currencyOptionText,
-                  {
-                    color:
-                      toCurrency === currency
-                        ? theme.buttonTextColor
-                        : theme.textColor,
-                  },
-                ]}
-              >
-                {currency}
-              </Text>
-            </TouchableOpacity>
-          ))}
-        </ScrollView>
       </ScrollView>
 
       <View style={styles.buttonRow}>
