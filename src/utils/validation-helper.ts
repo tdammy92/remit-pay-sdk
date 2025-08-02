@@ -50,6 +50,22 @@ export const validateReceiverDetails = (
     errors.phoneNumber = 'Invalid phone number format';
   }
 
+  if (!receiver.address?.trim()) {
+    errors.address = 'Address is required';
+  }
+
+  if (!receiver.city?.trim()) {
+    errors.city = 'City is required';
+  }
+
+  if (!receiver.country?.trim()) {
+    errors.country = 'Country is required';
+  }
+
+  if (!receiver.postalCode?.trim()) {
+    errors.postalCode = 'Postal code is required';
+  }
+
   return errors;
 };
 
@@ -76,6 +92,22 @@ export const validateSenderDetails = (
     errors.phoneNumber = 'Phone number is required';
   } else if (!validatePhoneNumber(sender.phoneNumber)) {
     errors.phoneNumber = 'Invalid phone number format';
+  }
+
+  if (!sender.address?.trim()) {
+    errors.address = 'Address is required';
+  }
+
+  if (!sender.city?.trim()) {
+    errors.city = 'City is required';
+  }
+
+  if (!sender.country?.trim()) {
+    errors.country = 'Country is required';
+  }
+
+  if (!sender.postalCode?.trim()) {
+    errors.postalCode = 'Postal code is required';
   }
 
   return errors;
