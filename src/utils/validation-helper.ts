@@ -36,12 +36,8 @@ export const validateReceiverDetails = (
 ): ValidationErrors => {
   const errors: ValidationErrors = {};
 
-  if (!receiver.firstName?.trim()) {
+  if (!receiver.fullName?.trim()) {
     errors.firstName = 'First name is required';
-  }
-
-  if (!receiver.lastName?.trim()) {
-    errors.lastName = 'Last name is required';
   }
 
   if (!receiver.phoneNumber?.trim()) {
@@ -58,12 +54,8 @@ export const validateSenderDetails = (
 ): ValidationErrors => {
   const errors: ValidationErrors = {};
 
-  if (!sender.firstName?.trim()) {
+  if (!sender.fullName?.trim()) {
     errors.firstName = 'First name is required';
-  }
-
-  if (!sender.lastName?.trim()) {
-    errors.lastName = 'Last name is required';
   }
 
   if (!sender.email?.trim()) {

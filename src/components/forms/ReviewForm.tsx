@@ -1,28 +1,26 @@
 import React from 'react';
 import {
-  View,
+  Alert,
+  ScrollView,
+  StyleSheet,
   Text,
   TextInput,
   TouchableOpacity,
-  StyleSheet,
-  ScrollView,
-  Alert,
+  View,
 } from 'react-native';
-import type { Receiver, Sender } from '../../types/user.types';
+import { usePayWidget } from '../../context';
 import type { Amount } from '../../types/transaction.types';
-import type { Theme } from '../../types';
+import type { Receiver, Sender } from '../../types/user.types';
+import FormHeader from './FormHeader';
 
 interface ReviewFormProps {
   senderDetails: Sender;
   receiverDetails: Receiver;
   amountDetails: Amount;
   reason: string;
-  //   message: string;
   onSubmit: () => void;
   onBack: () => void;
   onUpdateReason: (reason: string) => void;
-  //   onUpdateMessage: (message: string) => void;
-  theme: Theme;
   isLoading: boolean;
 }
 
@@ -34,13 +32,13 @@ export const ReviewForm: React.FC<ReviewFormProps> = ({
   onSubmit,
   onBack,
   onUpdateReason,
-  theme,
   isLoading,
 }) => {
+  const { theme } = usePayWidget();
   const handleSubmit = () => {
     Alert.alert(
       'Confirm Transaction',
-      `You are about to send ${amountDetails.sendAmount} ${amountDetails.sendCurrency} to ${receiverDetails.firstName} ${receiverDetails.lastName}. This action cannot be undone.`,
+      `You are about to send ${amountDetails.sendAmount} ${amountDetails.sendCurrency} to ${receiverDetails.fullName}. This action cannot be undone.`,
       [
         {
           text: 'Cancel',
@@ -68,9 +66,7 @@ export const ReviewForm: React.FC<ReviewFormProps> = ({
       style={[styles.container, { backgroundColor: theme.backgroundColor }]}
     >
       <ScrollView showsVerticalScrollIndicator={false}>
-        <Text style={[styles.title, { color: theme.textColor }]}>
-          Review & Send
-        </Text>
+        <FormHeader title="  Review & Send" />
 
         <View
           style={[
@@ -127,7 +123,7 @@ export const ReviewForm: React.FC<ReviewFormProps> = ({
             Sender Details
           </Text>
           <Text style={[styles.detailText, { color: theme.textColor }]}>
-            {senderDetails.firstName} {senderDetails.lastName}
+            {senderDetails.fullName}
           </Text>
           <Text
             style={[styles.detailSubtext, { color: theme.textColor + 'BB' }]}
@@ -138,12 +134,6 @@ export const ReviewForm: React.FC<ReviewFormProps> = ({
             style={[styles.detailSubtext, { color: theme.textColor + 'BB' }]}
           >
             {senderDetails.phoneNumber}
-          </Text>
-          <Text
-            style={[styles.detailSubtext, { color: theme.textColor + 'BB' }]}
-          >
-            {senderDetails.address}, {senderDetails.city},{' '}
-            {senderDetails.country}
           </Text>
         </View>
 
@@ -157,7 +147,7 @@ export const ReviewForm: React.FC<ReviewFormProps> = ({
             Recipient Details
           </Text>
           <Text style={[styles.detailText, { color: theme.textColor }]}>
-            {receiverDetails.firstName} {receiverDetails.lastName}
+            {receiverDetails.fullName}
           </Text>
           <Text
             style={[styles.detailSubtext, { color: theme.textColor + 'BB' }]}
@@ -171,12 +161,7 @@ export const ReviewForm: React.FC<ReviewFormProps> = ({
               {receiverDetails.email}
             </Text>
           )}
-          <Text
-            style={[styles.detailSubtext, { color: theme.textColor + 'BB' }]}
-          >
-            {receiverDetails.address}, {receiverDetails.city},{' '}
-            {receiverDetails.country}
-          </Text>
+
           {receiverDetails.bankAccount && (
             <Text
               style={[styles.detailSubtext, { color: theme.textColor + 'BB' }]}

@@ -1,16 +1,17 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
-  View,
+  ActivityIndicator,
+  ScrollView,
+  StyleSheet,
   Text,
   TextInput,
   TouchableOpacity,
-  StyleSheet,
-  ScrollView,
-  ActivityIndicator,
+  View,
 } from 'react-native';
+import { usePayWidget } from '../../context';
 import type { ExchangeRateResponse } from '../../types/transaction.types';
-import type { Theme } from '../../types';
 import { validateAmount } from '../../utils/validation-helper';
+import FormHeader from './FormHeader';
 
 interface AmountFormProps {
   sendAmount: number;
@@ -23,7 +24,6 @@ interface AmountFormProps {
   ) => Promise<ExchangeRateResponse>;
   onNext: () => void;
   onBack: () => void;
-  theme: Theme;
   isLoading: boolean;
 }
 
@@ -34,9 +34,8 @@ export const AmountForm: React.FC<AmountFormProps> = ({
   onCalculateRate,
   onNext,
   onBack,
-  theme,
-  isLoading,
 }) => {
+  const { theme } = usePayWidget();
   const [amount, setAmount] = useState(sendAmount?.toString() || '');
   const [fromCurrency, setFromCurrency] = useState(sendCurrency || 'USD');
   const [toCurrency, setToCurrency] = useState(receiveCurrency || 'NGN');
@@ -94,31 +93,115 @@ export const AmountForm: React.FC<AmountFormProps> = ({
   const inputStyle = [
     styles.input,
     {
-      backgroundColor: theme.cardBackgroundColor,
-      borderColor: theme.borderColor,
-      color: theme.textColor,
+      backgroundColor: theme?.cardBackgroundColor,
+      borderColor: theme?.borderColor,
+      color: theme?.textColor,
     },
   ];
 
-  const errorInputStyle = [...inputStyle, { borderColor: theme.errorColor }];
+  const errorInputStyle = [...inputStyle, { borderColor: theme?.errorColor }];
 
   return (
     <View
-      style={[styles.container, { backgroundColor: theme.backgroundColor }]}
+      style={[styles.container, { backgroundColor: theme?.backgroundColor }]}
     >
       <ScrollView showsVerticalScrollIndicator={false}>
-        <Text style={[styles.title, { color: theme.textColor }]}>
-          Send Money
+        <FormHeader title="Send Money" />
+
+        <Text
+          style={[styles.currencySectionTitle, { color: theme?.textColor }]}
+        >
+          Change Currencies
         </Text>
 
-        <Text style={[styles.label, { color: theme.textColor }]}>You Send</Text>
+        <Text style={[styles.label, { color: theme?.textColor }]}>
+          Send From
+        </Text>
+        <ScrollView
+          horizontal
+          showsHorizontalScrollIndicator={false}
+          style={styles.currencyList}
+        >
+          {currencies.map((currency) => (
+            <TouchableOpacity
+              key={`send-${currency}`}
+              style={[
+                styles.currencyOption,
+                {
+                  backgroundColor:
+                    fromCurrency === currency
+                      ? theme?.primaryColor
+                      : theme?.cardBackgroundColor,
+                  borderColor: theme?.borderColor,
+                },
+              ]}
+              onPress={() => setFromCurrency(currency)}
+            >
+              <Text
+                style={[
+                  styles.currencyOptionText,
+                  {
+                    color:
+                      fromCurrency === currency
+                        ? theme?.buttonTextColor
+                        : theme?.textColor,
+                  },
+                ]}
+              >
+                {currency}
+              </Text>
+            </TouchableOpacity>
+          ))}
+        </ScrollView>
+
+        <Text style={[styles.label, { color: theme?.textColor }]}>Send To</Text>
+        <ScrollView
+          horizontal
+          showsHorizontalScrollIndicator={false}
+          style={styles.currencyList}
+        >
+          {currencies.map((currency) => (
+            <TouchableOpacity
+              key={`receive-${currency}`}
+              style={[
+                styles.currencyOption,
+                {
+                  backgroundColor:
+                    toCurrency === currency
+                      ? theme?.primaryColor
+                      : theme?.cardBackgroundColor,
+                  borderColor: theme?.borderColor,
+                },
+              ]}
+              onPress={() => setToCurrency(currency)}
+            >
+              <Text
+                style={[
+                  styles.currencyOptionText,
+                  {
+                    color:
+                      toCurrency === currency
+                        ? theme?.buttonTextColor
+                        : theme?.textColor,
+                  },
+                ]}
+              >
+                {currency}
+              </Text>
+            </TouchableOpacity>
+          ))}
+        </ScrollView>
+
+        <Text style={[styles.label, { color: theme?.textColor }]}>
+          You Send
+        </Text>
         <View style={styles.amountRow}>
           <TextInput
             style={[error ? errorInputStyle : inputStyle, styles.amountInput]}
             value={amount}
             onChangeText={setAmount}
             placeholder="0.00"
-            placeholderTextColor={theme.textColor + '80'}
+            placeholderTextColor={theme?.textColor + '80'}
             keyboardType="numeric"
           />
           <View
@@ -199,116 +282,34 @@ export const AmountForm: React.FC<AmountFormProps> = ({
             </View>
             <View style={styles.rateRow}>
               <Text
-                style={[styles.rateLabel, { color: theme.textColor + 'CC' }]}
+                style={[styles.rateLabel, { color: theme?.textColor + 'CC' }]}
               >
                 Transfer Fee:
               </Text>
-              <Text style={[styles.rateValue, { color: theme.textColor }]}>
+              <Text style={[styles.rateValue, { color: theme?.textColor }]}>
                 {exchangeData.fees.toFixed(2)} {fromCurrency}
               </Text>
             </View>
             <View style={styles.rateRow}>
               <Text
-                style={[styles.rateLabel, { color: theme.textColor + 'CC' }]}
+                style={[styles.rateLabel, { color: theme?.textColor + 'CC' }]}
               >
                 Estimated Arrival:
               </Text>
-              <Text style={[styles.rateValue, { color: theme.textColor }]}>
+              <Text style={[styles.rateValue, { color: theme?.textColor }]}>
                 {new Date(exchangeData.estimatedArrival).toLocaleDateString()}
               </Text>
             </View>
           </View>
         )}
-
-        <Text style={[styles.currencySectionTitle, { color: theme.textColor }]}>
-          Change Currencies
-        </Text>
-
-        <Text style={[styles.label, { color: theme.textColor }]}>
-          Send From
-        </Text>
-        <ScrollView
-          horizontal
-          showsHorizontalScrollIndicator={false}
-          style={styles.currencyList}
-        >
-          {currencies.map((currency) => (
-            <TouchableOpacity
-              key={`send-${currency}`}
-              style={[
-                styles.currencyOption,
-                {
-                  backgroundColor:
-                    fromCurrency === currency
-                      ? theme.primaryColor
-                      : theme.cardBackgroundColor,
-                  borderColor: theme.borderColor,
-                },
-              ]}
-              onPress={() => setFromCurrency(currency)}
-            >
-              <Text
-                style={[
-                  styles.currencyOptionText,
-                  {
-                    color:
-                      fromCurrency === currency
-                        ? theme.buttonTextColor
-                        : theme.textColor,
-                  },
-                ]}
-              >
-                {currency}
-              </Text>
-            </TouchableOpacity>
-          ))}
-        </ScrollView>
-
-        <Text style={[styles.label, { color: theme.textColor }]}>Send To</Text>
-        <ScrollView
-          horizontal
-          showsHorizontalScrollIndicator={false}
-          style={styles.currencyList}
-        >
-          {currencies.map((currency) => (
-            <TouchableOpacity
-              key={`receive-${currency}`}
-              style={[
-                styles.currencyOption,
-                {
-                  backgroundColor:
-                    toCurrency === currency
-                      ? theme.primaryColor
-                      : theme.cardBackgroundColor,
-                  borderColor: theme.borderColor,
-                },
-              ]}
-              onPress={() => setToCurrency(currency)}
-            >
-              <Text
-                style={[
-                  styles.currencyOptionText,
-                  {
-                    color:
-                      toCurrency === currency
-                        ? theme.buttonTextColor
-                        : theme.textColor,
-                  },
-                ]}
-              >
-                {currency}
-              </Text>
-            </TouchableOpacity>
-          ))}
-        </ScrollView>
       </ScrollView>
 
       <View style={styles.buttonRow}>
         <TouchableOpacity
-          style={[styles.backButton, { borderColor: theme.borderColor }]}
+          style={[styles.backButton, { borderColor: theme?.borderColor }]}
           onPress={onBack}
         >
-          <Text style={[styles.backButtonText, { color: theme.textColor }]}>
+          <Text style={[styles.backButtonText, { color: theme?.textColor }]}>
             Back
           </Text>
         </TouchableOpacity>
@@ -318,13 +319,15 @@ export const AmountForm: React.FC<AmountFormProps> = ({
             styles.button,
             {
               backgroundColor:
-                exchangeData && !error ? theme.primaryColor : theme.borderColor,
+                exchangeData && !error
+                  ? theme?.primaryColor
+                  : theme?.borderColor,
             },
           ]}
           onPress={handleNext}
           disabled={!exchangeData || !!error || calculating}
         >
-          <Text style={[styles.buttonText, { color: theme.buttonTextColor }]}>
+          <Text style={[styles.buttonText, { color: theme?.buttonTextColor }]}>
             Continue
           </Text>
         </TouchableOpacity>

@@ -3,43 +3,22 @@ import type {
   Transaction,
   TransactionDetails,
 } from '../types/transaction.types';
+import { mockExchangeRates } from '../utils/xchange-rate';
 
 // Mock API delay
 const delay = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
 
-// Mock exchange rates
-const mockExchangeRates: Record<string, Record<string, number>> = {
-  USD: {
-    NGN: 800,
-    GHS: 12,
-    KES: 150,
-    UGX: 3700,
-  },
-  EUR: {
-    NGN: 880,
-    GHS: 13.2,
-    KES: 165,
-    UGX: 4070,
-  },
-  GBP: {
-    NGN: 1000,
-    GHS: 15,
-    KES: 187,
-    UGX: 4625,
-  },
-};
-
 export class ApiService {
   private apiKey: string;
-  private baseUrl: string;
+  // private baseUrl: string;
   private testMode: boolean;
 
   constructor(apiKey: string, testMode: boolean = true) {
     this.apiKey = apiKey;
     this.testMode = testMode;
-    this.baseUrl = testMode
-      ? 'https://api-sandbox.afriex.com'
-      : 'https://api.afriex.com';
+    // this.baseUrl = testMode
+    //   ? 'https://api-sandbox.afriex.com'
+    //   : 'https://api.afriex.com';
   }
 
   async getExchangeRate(
@@ -50,7 +29,7 @@ export class ApiService {
     await delay(1000); // Simulate API delay
 
     // Mock validation
-    if (!this.apiKey || this.apiKey === 'invalid-key') {
+    if (!this.apiKey || !TESTKEYS.includes(this.apiKey)) {
       throw new RemittanceError('INVALID_API_KEY', 'Invalid API key provided');
     }
 
@@ -101,9 +80,7 @@ export class ApiService {
     return transaction;
   }
 
-  async getTransactionStatus(
-    transactionId: string
-  ): Promise<Transaction['status']> {
+  async getTransactionStatus(): Promise<Transaction['status']> {
     await delay(500);
 
     // Mock status progression
@@ -115,10 +92,6 @@ export class ApiService {
   private generateTransactionId(): string {
     return `TXN_${Date.now()}_${Math.random().toString(36).substr(2, 9).toUpperCase()}`;
   }
-
-  //   private generateTrackingNumber(): string {
-  //     return `AF${Date.now().toString().slice(-8)}${Math.random().toString(36).substr(2, 4).toUpperCase()}`;
-  //   }
 
   private calculateEstimatedArrival(): string {
     const now = new Date();
@@ -139,3 +112,5 @@ export class RemittanceError extends Error {
     this.name = 'RemittanceError';
   }
 }
+//for test simulation
+const TESTKEYS = ['1GH34535453', '54545SDFDFD', '3244354535'];
