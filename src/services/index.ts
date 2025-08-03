@@ -10,15 +10,15 @@ const delay = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
 
 export class ApiService {
   private apiKey: string;
-  private baseUrl: string;
+  // private baseUrl: string;
   private testMode: boolean;
 
   constructor(apiKey: string, testMode: boolean = true) {
     this.apiKey = apiKey;
     this.testMode = testMode;
-    this.baseUrl = testMode
-      ? 'https://api-sandbox.afriex.com'
-      : 'https://api.afriex.com';
+    // this.baseUrl = testMode
+    //   ? 'https://api-sandbox.afriex.com'
+    //   : 'https://api.afriex.com';
   }
 
   async getExchangeRate(
@@ -80,9 +80,7 @@ export class ApiService {
     return transaction;
   }
 
-  async getTransactionStatus(
-    transactionId: string
-  ): Promise<Transaction['status']> {
+  async getTransactionStatus(): Promise<Transaction['status']> {
     await delay(500);
 
     // Mock status progression
