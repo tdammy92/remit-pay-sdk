@@ -1,4 +1,4 @@
-import PayWidget, {
+import RemitWidgt, {
   type Transaction,
   type TransactionError,
 } from 'remit-pay-sdk';
@@ -16,26 +16,11 @@ import {
 } from 'react-native';
 
 const App: React.FC = () => {
-  const [showWidget, setShowWidget] = useState(false);
   const [theme, setTheme] = useState<'light' | 'dark'>('light');
-  const [apiKey, setApiKey] = useState('1GH34535453');
-  const [lastTransaction, setLastTransaction] = useState<Transaction | null>(
-    null
-  );
 
   const handleSuccess = (transaction: Transaction) => {
     console.log('Transaction successful:', transaction);
-    setLastTransaction(transaction);
-    Alert.alert(
-      'Success!',
-      `Your transfer of ${transaction.data.amount.sendAmount} ${transaction.data.amount.sendCurrency} has been sent successfully!`,
-      [
-        {
-          text: 'OK',
-          onPress: () => setShowWidget(false),
-        },
-      ]
-    );
+    console.log('TRANSACTIONS', JSON.stringify(transaction));
   };
 
   const handleError = (error: TransactionError) => {
@@ -43,37 +28,13 @@ const App: React.FC = () => {
     Alert.alert('Error', error.message);
   };
 
-  const handleCancel = () => {
-    setShowWidget(false);
-  };
+  const handleCancel = () => {};
 
   const toggleTheme = () => {
     setTheme((prev) => (prev === 'light' ? 'dark' : 'light'));
   };
 
-  const testInvalidApiKey = () => {
-    setApiKey('invalid-key');
-    setShowWidget(true);
-  };
-
-  const resetApiKey = () => {
-    setApiKey('demo-api-key');
-  };
-
-  if (showWidget) {
-    return (
-      <PayWidget
-        apiKey={apiKey}
-        onSuccess={handleSuccess}
-        onError={handleError}
-        onCancel={handleCancel}
-        theme={theme === 'dark' ? 'light' : 'dark'}
-        defaultSendCurrency="USD"
-        defaultReceiveCurrency="NGN"
-        testMode={true}
-      />
-    );
-  }
+  const testInvalidApiKey = () => {};
 
   return (
     <>
@@ -111,7 +72,7 @@ const App: React.FC = () => {
                 styles.primaryButton,
                 theme === 'dark' && styles.darkPrimaryButton,
               ]}
-              onPress={() => setShowWidget(true)}
+              onPress={() => RemitWidgt.open()}
             >
               <Text style={styles.primaryButtonText}>Send Money</Text>
             </TouchableOpacity>
@@ -166,6 +127,16 @@ const App: React.FC = () => {
           </View>
         </ScrollView>
       </SafeAreaView>
+      <RemitWidgt
+        apiKey={'1GH34535453'}
+        onSuccess={handleSuccess}
+        onError={handleError}
+        onCancel={handleCancel}
+        customTheme={theme}
+        defaultSendCurrency="USD"
+        defaultReceiveCurrency="NGN"
+        testMode={true}
+      />
     </>
   );
 };

@@ -1,24 +1,25 @@
 import React, { useState } from 'react';
 import {
-  View,
+  KeyboardAvoidingView,
+  Platform,
+  ScrollView,
+  StyleSheet,
   Text,
   TextInput,
   TouchableOpacity,
-  StyleSheet,
-  ScrollView,
-  KeyboardAvoidingView,
-  Platform,
+  View,
 } from 'react-native';
+import { usePayWidget } from '../../context';
+import type { ValidationErrors } from '../../types';
 import type { Receiver } from '../../types/user.types';
-import type { Theme, ValidationErrors } from '../../types';
 import { validateReceiverDetails } from '../../utils/validation-helper';
+import FormHeader from './FormHeader';
 
 interface ReceiverFormProps {
   receiverDetails: Partial<Receiver>;
   onUpdateReceiver: (details: Partial<Receiver>) => void;
   onNext: () => void;
   onBack: () => void;
-  theme: Theme;
 }
 
 export const ReceiverForm: React.FC<ReceiverFormProps> = ({
@@ -26,8 +27,8 @@ export const ReceiverForm: React.FC<ReceiverFormProps> = ({
   onUpdateReceiver,
   onNext,
   onBack,
-  theme,
 }) => {
+  const { theme } = usePayWidget();
   const [errors, setErrors] = useState<ValidationErrors>({});
 
   const handleInputChange = (field: keyof Receiver, value: string) => {
@@ -63,9 +64,7 @@ export const ReceiverForm: React.FC<ReceiverFormProps> = ({
       behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
     >
       <ScrollView showsVerticalScrollIndicator={false}>
-        <Text style={[styles.title, { color: theme.textColor }]}>
-          Beneficiary Information
-        </Text>
+        <FormHeader title=" Beneficiary Information" />
 
         <Text style={[styles.label, { color: theme.textColor }]}>
           Full Name *

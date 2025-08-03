@@ -1,27 +1,26 @@
 import React, { useEffect, useRef } from 'react';
 import {
-  View,
+  Animated,
+  StyleSheet,
   Text,
   TouchableOpacity,
-  StyleSheet,
-  Animated,
+  View,
 } from 'react-native';
+import { usePayWidget } from '../../context';
 import type { Transaction } from '../../types/transaction.types';
-import type { Theme } from '../../types';
 
 interface SuccessScreenProps {
   transaction: Transaction;
   onClose: () => void;
   onStartNew: () => void;
-  theme: Theme;
 }
 
 export const SuccessScreen: React.FC<SuccessScreenProps> = ({
   transaction,
   onClose,
   onStartNew,
-  theme,
 }) => {
+  const { theme } = usePayWidget();
   const fadeAnim = useRef(new Animated.Value(0)).current;
   const scaleAnim = useRef(new Animated.Value(0.8)).current;
   const checkmarkAnim = useRef(new Animated.Value(0)).current;

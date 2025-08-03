@@ -5,12 +5,27 @@ export interface RemitWidgetProps {
   onSuccess: (transaction: Transaction) => void;
   onError: (error: TransactionError) => void;
   onCancel?: () => void;
-  theme?: 'light' | 'dark' | Theme;
+  customTheme?: 'light' | 'dark' | Theme;
   defaultSendCurrency?: string;
   defaultReceiveCurrency?: string;
   enabledCountries?: string[];
   testMode?: boolean;
+  openPayWidget?: (params?: WidgetOpenParams) => void;
+  closePayWidget?: (params?: WidgetCloseParams) => void;
 }
+
+export type WidgetAction = {
+  openPayWidget: () => void;
+  closePayWidget: () => void;
+};
+
+export type WidgetOpenParams = RemitWidgetProps & WidgetAction;
+export type WidgetCloseParams = void;
+
+export type WidgetActionRef = {
+  openPayWidget: (params?: WidgetOpenParams) => void;
+  closePayWidget: (params?: WidgetCloseParams) => void;
+};
 
 export interface Theme {
   primaryColor: string;

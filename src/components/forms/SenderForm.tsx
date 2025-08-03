@@ -1,31 +1,31 @@
 import React, { useState } from 'react';
 import {
-  View,
+  KeyboardAvoidingView,
+  Platform,
+  ScrollView,
+  StyleSheet,
   Text,
   TextInput,
   TouchableOpacity,
-  StyleSheet,
-  ScrollView,
-  KeyboardAvoidingView,
-  Platform,
 } from 'react-native';
+import { usePayWidget } from '../../context';
+import type { ValidationErrors } from '../../types';
 import type { Sender } from '../../types/user.types';
-import type { Theme, ValidationErrors } from '../../types';
 import { validateSenderDetails } from '../../utils/validation-helper';
+import FormHeader from './FormHeader';
 
 interface SenderFormProps {
   senderDetails: Partial<Sender>;
   onUpdateSender: (details: Partial<Sender>) => void;
   onNext: () => void;
-  theme: Theme;
 }
 
 export const SenderForm: React.FC<SenderFormProps> = ({
   senderDetails,
   onUpdateSender,
   onNext,
-  theme,
 }) => {
+  const { theme } = usePayWidget();
   const [errors, setErrors] = useState<ValidationErrors>({});
 
   const handleInputChange = (field: keyof Sender, value: string) => {
@@ -61,9 +61,7 @@ export const SenderForm: React.FC<SenderFormProps> = ({
       behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
     >
       <ScrollView showsVerticalScrollIndicator={false}>
-        <Text style={[styles.title, { color: theme.textColor }]}>
-          Sender Information
-        </Text>
+        <FormHeader title="Sender Information" />
 
         <Text style={[styles.label, { color: theme.textColor }]}>
           Full Name *

@@ -1,16 +1,17 @@
 import React from 'react';
 import {
-  View,
+  Alert,
+  ScrollView,
+  StyleSheet,
   Text,
   TextInput,
   TouchableOpacity,
-  StyleSheet,
-  ScrollView,
-  Alert,
+  View,
 } from 'react-native';
-import type { Receiver, Sender } from '../../types/user.types';
+import { usePayWidget } from '../../context';
 import type { Amount } from '../../types/transaction.types';
-import type { Theme } from '../../types';
+import type { Receiver, Sender } from '../../types/user.types';
+import FormHeader from './FormHeader';
 
 interface ReviewFormProps {
   senderDetails: Sender;
@@ -20,7 +21,6 @@ interface ReviewFormProps {
   onSubmit: () => void;
   onBack: () => void;
   onUpdateReason: (reason: string) => void;
-  theme: Theme;
   isLoading: boolean;
 }
 
@@ -32,9 +32,9 @@ export const ReviewForm: React.FC<ReviewFormProps> = ({
   onSubmit,
   onBack,
   onUpdateReason,
-  theme,
   isLoading,
 }) => {
+  const { theme } = usePayWidget();
   const handleSubmit = () => {
     Alert.alert(
       'Confirm Transaction',
@@ -66,9 +66,7 @@ export const ReviewForm: React.FC<ReviewFormProps> = ({
       style={[styles.container, { backgroundColor: theme.backgroundColor }]}
     >
       <ScrollView showsVerticalScrollIndicator={false}>
-        <Text style={[styles.title, { color: theme.textColor }]}>
-          Review & Send
-        </Text>
+        <FormHeader title="  Review & Send" />
 
         <View
           style={[

@@ -1,16 +1,13 @@
 import React from 'react';
-import { View, ActivityIndicator, Text, StyleSheet } from 'react-native';
-import type { Theme } from '../../types';
+import { ActivityIndicator, StyleSheet, Text, View } from 'react-native';
+import { usePayWidget } from '../../context';
 
 interface LoadingSpinnerProps {
-  theme: Theme;
   message?: string;
 }
 
-export const LoadingSpinner: React.FC<LoadingSpinnerProps> = ({
-  theme,
-  message,
-}) => {
+export const LoadingSpinner: React.FC<LoadingSpinnerProps> = ({ message }) => {
+  const { theme } = usePayWidget();
   return (
     <View
       style={[styles.container, { backgroundColor: theme.backgroundColor }]}
